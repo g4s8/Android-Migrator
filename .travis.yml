@@ -4,12 +4,11 @@ android:
   components:
     - build-tools-25.0.2
     - android-25
+  licenses:
+    - 'android-sdk-license-.+'
 
 jdk:
   - oraclejdk8
-
-licenses:
-  - 'android-sdk-license-.+'
 
 install: ./gradlew copyTestAssets test
 
