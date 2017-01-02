@@ -6,7 +6,9 @@ android:
     - android-25
     - extra
   licenses:
-    - 'android-sdk-license-.+'
+      - 'android-sdk-preview-license-.+'
+      - 'android-sdk-license-.+'
+      - 'google-gdk-license-.+'
 
 jdk:
   - oraclejdk8
