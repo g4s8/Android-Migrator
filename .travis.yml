@@ -5,6 +5,9 @@ android:
     - build-tools-25.0.2
     - android-25
 
+jdk:
+  - oraclejdk8
+
 install: ./gradlew copyTestAssets test
 
 before_cache:
