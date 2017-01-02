@@ -1,8 +1,9 @@
 language: android
 
 android:
-  - build-tools-25.0.2
-  - android-25
+  components:
+    - build-tools-25.0.2
+    - android-25
 
 install: ./gradlew copyTestAssets test
 
