@@ -8,6 +8,9 @@ android:
 jdk:
   - oraclejdk8
 
+licenses:
+  - 'android-sdk-license-.+'
+
 install: ./gradlew copyTestAssets test
 
 before_cache:
