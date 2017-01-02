@@ -36,6 +36,7 @@ import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 23, manifest = Config.NONE, assetDir = Config.DEFAULT_ASSET_FOLDER)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class MigrationFileAssetTest {
 
     @Test

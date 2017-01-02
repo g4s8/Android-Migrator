@@ -38,12 +38,6 @@ import java.util.List;
  */
 final class MigrationFileAsset implements MigrationFile {
 
-    private static int version(String name) {
-        final int s = name.indexOf(".");
-        final String base = name.substring(0, s > 0 ? s : name.length());
-        return Integer.parseInt(base);
-    }
-
     private final int version;
     private final AssetManager assets;
     private final File file;
@@ -78,5 +72,11 @@ final class MigrationFileAsset implements MigrationFile {
             }
         }
         return migrations;
+    }
+
+    private static int version(String name) {
+        final int s = name.indexOf('.');
+        final String base = name.substring(0, s > 0 ? s : name.length());
+        return Integer.parseInt(base);
     }
 }

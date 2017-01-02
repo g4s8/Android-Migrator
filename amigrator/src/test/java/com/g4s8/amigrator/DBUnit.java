@@ -66,7 +66,7 @@ final class DBUnit extends SQLiteOpenHelper {
         try {
             migrations.apply(db, 0, version);
         } catch (MigrationException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //NOPMD
             Assert.fail("onCreate MigrationException " + e.getMessage());
         }
     }
@@ -76,7 +76,7 @@ final class DBUnit extends SQLiteOpenHelper {
         try {
             migrations.apply(db, oldVersion, newVersion);
         } catch (MigrationException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //NOPMD
             Assert.fail("onUpgrade MigrationException " + e.getMessage());
         }
     }

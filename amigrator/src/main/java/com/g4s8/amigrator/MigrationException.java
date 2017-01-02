@@ -30,7 +30,7 @@ import android.support.annotation.NonNull;
 @SuppressWarnings("WeakerAccess")
 public final class MigrationException extends Exception {
 
-    public MigrationException(@NonNull final String message, @NonNull final Exception inner) {
+    MigrationException(@NonNull final String message, @NonNull final Exception inner) {
         super(message, inner);
     }
 }

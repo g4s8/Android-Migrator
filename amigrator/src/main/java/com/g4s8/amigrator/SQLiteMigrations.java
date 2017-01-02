@@ -45,24 +45,43 @@ public final class SQLiteMigrations {
     private final Context context;
     private final String folder;
 
+    /**
+     * New migrations from default assets folder.
+     *
+     * @param context current application context.
+     */
     public SQLiteMigrations(
-            @NonNull final Context context
+        @NonNull final Context context
     ) {
         this(context, DEFAULT_FOLDER);
     }
 
+    /**
+     * New migrations from custom assets folder.
+     *
+     * @param context current application content.
+     * @param folder  custom folder.
+     */
     public SQLiteMigrations(
-            @NonNull final Context context,
-            @NonNull final String folder
+        @NonNull final Context context,
+        @NonNull final String folder
     ) {
         this.context = context;
         this.folder = folder;
     }
 
+    /**
+     * Apply migrations to provided database.
+     *
+     * @param database where migrations will be applied.
+     * @param from     current db version
+     * @param to       new db version
+     * @throws MigrationException if migrations failed.
+     */
     public void apply(
-            @NonNull final SQLiteDatabase database,
-            final int from,
-            final int to
+        @NonNull final SQLiteDatabase database,
+        final int from,
+        final int to
     ) throws MigrationException {
         Log.i(LTAG, String.format("Apply migration: %d -> %d", from, to));
         database.beginTransaction();
@@ -70,9 +89,9 @@ public final class SQLiteMigrations {
             final MigrationsFilter migrations;
             try {
                 migrations = new MigrationsFilter(
-                        new OrderedByVersionFiles(context.getAssets(), folder),
-                        from,
-                        to
+                    new OrderedByVersionFiles(context.getAssets(), folder),
+                    from,
+                    to
                 );
             } catch (IOException e) {
                 throw new MigrationException("Failed to read migrations", e);

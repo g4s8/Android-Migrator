@@ -36,8 +36,7 @@ public final class IterableEnum<T> implements Enumeration<T> {
 
     private final Iterator<? extends T> iterator;
 
-    @SuppressWarnings("WeakerAccess")
-    public IterableEnum(@NonNull final Iterator<? extends T> iterator) {
+    private IterableEnum(@NonNull final Iterator<? extends T> iterator) {
         this.iterator = iterator;
     }
 

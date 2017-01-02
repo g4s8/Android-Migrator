@@ -40,6 +40,24 @@ import java.util.List;
  */
 final class MigrationsFilter implements Iterable<MigrationFile> {
 
+    private final List<MigrationFile> origin;
+
+    MigrationsFilter(
+        @NonNull final Iterable<? extends MigrationFile> origin,
+        final int versionStart,
+        final int versionEnd
+    ) {
+        this.origin = new ListFilter<>(
+            Collections.list(new IterableEnum<>(origin)),
+            new MigrationFileVersionPredicate(versionStart, versionEnd)
+        );
+    }
+
+    @Override
+    public Iterator<MigrationFile> iterator() {
+        return origin.iterator();
+    }
+
     private static final class MigrationFileVersionPredicate implements Predicate<MigrationFile> {
 
         private final int vStart;
@@ -58,23 +76,5 @@ final class MigrationsFilter implements Iterable<MigrationFile> {
         private boolean apply(final int version) {
             return version > vStart && version <= vEnd;
         }
-    }
-
-    private final List<MigrationFile> origin;
-
-    MigrationsFilter(
-        @NonNull final Iterable<? extends MigrationFile> origin,
-        final int versionStart,
-        final int versionEnd
-    ) {
-        this.origin = new ListFilter<>(
-            Collections.list(new IterableEnum<>(origin)),
-            new MigrationFileVersionPredicate(versionStart, versionEnd)
-        );
-    }
-
-    @Override
-    public Iterator<MigrationFile> iterator() {
-        return origin.iterator();
     }
 }

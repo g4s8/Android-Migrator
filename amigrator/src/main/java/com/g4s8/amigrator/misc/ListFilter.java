@@ -32,19 +32,6 @@ import java.util.List;
 
 public final class ListFilter<T> extends AbstractList<T> {
 
-    private static <T> List<T> filter(
-        @NonNull final List<T> origin,
-        @NonNull final Predicate<T> predicate
-    ) {
-        final List<T> res = new LinkedList<>();
-        for (T item : origin) {
-            if (predicate.apply(item)) {
-                res.add(item);
-            }
-        }
-        return res;
-    }
-
     private final List<T> origin;
 
     public ListFilter(@NonNull final List<T> source, @NonNull final Predicate<T> predicate) {
@@ -59,5 +46,18 @@ public final class ListFilter<T> extends AbstractList<T> {
     @Override
     public int size() {
         return origin.size();
+    }
+
+    private static <T> List<T> filter(
+        @NonNull final List<T> origin,
+        @NonNull final Predicate<T> predicate
+    ) {
+        final List<T> res = new LinkedList<>();
+        for (T item : origin) {
+            if (predicate.apply(item)) {
+                res.add(item);
+            }
+        }
+        return res;
     }
 }

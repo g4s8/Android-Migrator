@@ -42,30 +42,14 @@ import java.util.List;
  */
 final class OrderedByVersionFiles implements Iterable<MigrationFileAsset> {
 
-    private static final Comparator<MigrationFileAsset> BY_VERSION_COMPARATOR = new Comparator<MigrationFileAsset>() {
+    @SuppressWarnings("Convert2Lambda")
+    private static final Comparator<MigrationFileAsset> COMPARATOR
+        = new Comparator<MigrationFileAsset>() {
         @Override
         public int compare(MigrationFileAsset o1, MigrationFileAsset o2) {
             return o1.version() - o2.version();
         }
     };
-
-    private static List<MigrationFileAsset> toMigrationFiles(
-        final AssetManager assets,
-        final String folder,
-        final List<String> names
-    ) {
-        List<MigrationFileAsset> files = new LinkedList<>();
-        for (String name : names) {
-            files.add(new MigrationFileAsset(assets, new File(folder, name)));
-        }
-        return files;
-    }
-
-    private static List<MigrationFileAsset> orderByVersion(final List<MigrationFileAsset> files) {
-        final List<MigrationFileAsset> out = new ArrayList<>(files);
-        Collections.sort(out, BY_VERSION_COMPARATOR);
-        return out;
-    }
 
     private final List<MigrationFileAsset> files;
 
@@ -85,5 +69,23 @@ final class OrderedByVersionFiles implements Iterable<MigrationFileAsset> {
     @Override
     public Iterator<MigrationFileAsset> iterator() {
         return files.iterator();
+    }
+
+    private static List<MigrationFileAsset> orderByVersion(final List<MigrationFileAsset> files) {
+        final List<MigrationFileAsset> out = new ArrayList<>(files);
+        Collections.sort(out, COMPARATOR);
+        return out;
+    }
+
+    private static List<MigrationFileAsset> toMigrationFiles(
+        final AssetManager assets,
+        final String folder,
+        final List<String> names
+    ) {
+        List<MigrationFileAsset> files = new LinkedList<>();
+        for (String name : names) {
+            files.add(new MigrationFileAsset(assets, new File(folder, name)));
+        }
+        return files;
     }
 }
