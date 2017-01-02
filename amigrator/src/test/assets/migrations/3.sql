@@ -1,0 +1,1 @@
+INSERT INTO versions (value) VALUES (3);
