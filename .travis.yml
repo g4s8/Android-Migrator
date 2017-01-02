@@ -10,7 +10,7 @@ android:
 jdk:
   - oraclejdk8
 
-script: './gradlew lint copyTestAssets test'
+script: './gradlew lint copyTestAssets test jacocoTestReport'
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
