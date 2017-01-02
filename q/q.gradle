@@ -6,7 +6,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 
-check.dependsOn 'checkstyle', 'findbugs', 'pmd', 'lint'
+check.dependsOn 'checkstyle', 'findbugs', 'pmd', 'lint', 'jacocoTestReport'
 
 def configDir = "${project.rootDir}/q/config"
 def reportsDir = "${project.buildDir}/reports"

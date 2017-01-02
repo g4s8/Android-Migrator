@@ -39,9 +39,4 @@ final class Migration {
     void apply(@NonNull final SQLiteDatabase database) throws MigrationException {
         database.execSQL(statement);
     }
-
-    @Override
-    public String toString() {
-        return String.format("[Migration: (%s)]", statement);
-    }
 }

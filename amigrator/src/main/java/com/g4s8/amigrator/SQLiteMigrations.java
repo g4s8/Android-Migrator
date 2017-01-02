@@ -24,6 +24,7 @@ package com.g4s8.amigrator;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -36,6 +37,7 @@ import java.io.IOException;
  * <p>
  */
 @SuppressWarnings("WeakerAccess")
+@Keep
 public final class SQLiteMigrations {
 
     private static final String DEFAULT_FOLDER = "migrations";
@@ -50,6 +52,7 @@ public final class SQLiteMigrations {
      *
      * @param context current application context.
      */
+    @Keep
     public SQLiteMigrations(
         @NonNull final Context context
     ) {
@@ -62,6 +65,7 @@ public final class SQLiteMigrations {
      * @param context current application content.
      * @param folder  custom folder.
      */
+    @Keep
     public SQLiteMigrations(
         @NonNull final Context context,
         @NonNull final String folder
@@ -78,6 +82,7 @@ public final class SQLiteMigrations {
      * @param to       new db version
      * @throws MigrationException if migrations failed.
      */
+    @Keep
     public void apply(
         @NonNull final SQLiteDatabase database,
         final int from,

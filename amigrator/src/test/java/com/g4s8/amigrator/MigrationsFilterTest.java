@@ -34,23 +34,34 @@ import java.util.List;
 
 public class MigrationsFilterTest {
 
-    private static final class MigrationFileFake implements MigrationFile {
+    @Test
+    public void skipLo() {
+        final MigrationsFilter filter = new MigrationsFilter(
+            Collections.singletonList(
+                new MigrationFileFake(4)
+            ),
+            10,
+            12
+        );
+        MatcherAssert.assertThat(
+            filter.iterator().hasNext(),
+            Matchers.is(false)
+        );
+    }
 
-        private final int version;
-
-        private MigrationFileFake(final int version) {
-            this.version = version;
-        }
-
-        @Override
-        public int version() {
-            return version;
-        }
-
-        @Override
-        public List<Migration> migrations() throws IOException {
-            return Collections.emptyList();
-        }
+    @Test
+    public void skipHi() {
+        final MigrationsFilter filter = new MigrationsFilter(
+            Collections.singletonList(
+                new MigrationFileFake(42)
+            ),
+            10,
+            12
+        );
+        MatcherAssert.assertThat(
+            filter.iterator().hasNext(),
+            Matchers.is(false)
+        );
     }
 
     @Test
@@ -77,5 +88,24 @@ public class MigrationsFilterTest {
             iter.hasNext(),
             Matchers.is(false)
         );
+    }
+
+    private static final class MigrationFileFake implements MigrationFile {
+
+        private final int version;
+
+        private MigrationFileFake(final int version) {
+            this.version = version;
+        }
+
+        @Override
+        public int version() {
+            return version;
+        }
+
+        @Override
+        public List<Migration> migrations() throws IOException {
+            return Collections.emptyList();
+        }
     }
 }

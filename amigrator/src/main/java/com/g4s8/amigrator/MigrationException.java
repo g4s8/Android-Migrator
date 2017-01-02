@@ -22,12 +22,14 @@
  */
 package com.g4s8.amigrator;
 
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 
 /**
  * Thrown if migration failed.
  */
 @SuppressWarnings("WeakerAccess")
+@Keep
 public final class MigrationException extends Exception {
 
     MigrationException(@NonNull final String message, @NonNull final Exception inner) {
