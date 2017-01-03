@@ -67,6 +67,7 @@ android {
                 excludes: [
                         '**/R*.class',
                         '**/BuildConfig*',
+                        '**/*Exception.class',
                         '**/*$$*'
                 ]
         )

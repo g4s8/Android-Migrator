@@ -50,6 +50,16 @@ public class MigrationFileAssetTest {
     }
 
     @Test
+    public void versionWithoutExt() {
+        MatcherAssert.assertThat(
+            new MigrationFileAsset(
+                RuntimeEnvironment.application.getAssets(), new File("1852")
+            ).version(),
+            Matchers.equalTo(1852)
+        );
+    }
+
+    @Test
     public void migrations() throws IOException {
         final List<Migration> migrations = new MigrationFileAsset(
             RuntimeEnvironment.application.getAssets(), new File("files", "88.sql")
