@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'jacoco-android'
 apply from: '../q/q.gradle'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 25
@@ -16,10 +16,9 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -32,10 +31,8 @@ android {
 
     tasks.whenTaskAdded { task ->
         if (task.name == 'assembleDebugUnitTest') {
-            println 'copyDebugTestAssets added'
             task.dependsOn copyDebugTestAssets
-        }
-        if (task.name == 'assembleReleaseUnitTest') {
+        } else if (task.name == 'assembleReleaseUnitTest') {
             task.dependsOn copyReleaseTestAssets
         }
     }
@@ -50,10 +47,48 @@ android {
         into "${buildDir}/intermediates/bundles/release/assets"
     }
 
-    jacocoAndroidUnitTestReport {
-        csv.enabled false
-        html.enabled true
-        xml.enabled true
+    task jacocoReport(type: JacocoReport) {
+        group = 'Reporting'
+        description = 'Generate Jacoco coverage reports after running tests.'
+
+        reports {
+            xml {
+                enabled = true
+                destination "${buildDir}/reports/jacoco/jacoco.xml"
+            }
+            html {
+                enabled = true
+                destination "${buildDir}/reports/jacoco"
+            }
+        }
+
+        classDirectories = fileTree(
+                dir: 'build/intermediates/classes/debug',
+                excludes: [
+                        '**/R*.class',
+                        '**/BuildConfig*',
+                        '**/*$$*'
+                ]
+        )
+
+        sourceDirectories = files('src/main/java')
+        executionData = files('build/jacoco/testDebugUnitTest.exec')
+
+        doFirst {
+            files('build/intermediates/classes/debug').getFiles().each { file ->
+                if (file.name.contains('$$')) {
+                    file.renameTo(file.path.replace('$$', '$'))
+                }
+            }
+        }
+    }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 }
 

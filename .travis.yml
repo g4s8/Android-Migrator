@@ -10,7 +10,8 @@ android:
 jdk:
   - 'oraclejdk8'
 
-script: './gradlew clean check'
+script:
+  - './gradlew clean check'
 
 before_cache:
   - 'rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock'
@@ -22,4 +23,5 @@ cache:
     - '$HOME/.gradle/wrapper/'
 
 after_success:
+  - './gradlew jacocoReport'
   - 'bash <(curl -s https://codecov.io/bash)'
