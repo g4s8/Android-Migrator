@@ -30,32 +30,24 @@ android {
         }
     }
 
-    task copyTestAssets << {
-        [
-                "${buildDir}/intermediates/bundles/debug/assets",
-                "${buildDir}/intermediates/bundles/release/assets"
-        ].each {
-            d ->
-                copy {
-                    from "${projectDir}/src/test/assets"
-                    into d
-                }
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'assembleDebugUnitTest') {
+            println 'copyDebugTestAssets added'
+            task.dependsOn copyDebugTestAssets
+        }
+        if (task.name == 'assembleReleaseUnitTest') {
+            task.dependsOn copyReleaseTestAssets
         }
     }
 
-    afterEvaluate {
-        test.dependsOn 'copyTestAssets'
+    task copyDebugTestAssets(type: Copy) {
+        from "${projectDir}/src/test/assets"
+        into "${buildDir}/intermediates/bundles/debug/assets"
     }
 
-    testOptions {
-        unitTests.all {
-            // All the usual Gradle options.
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                outputs.upToDateWhen { false }
-                showStandardStreams = true
-            }
-        }
+    task copyReleaseTestAssets(type: Copy) {
+        from "${projectDir}/src/test/assets"
+        into "${buildDir}/intermediates/bundles/release/assets"
     }
 
     jacocoAndroidUnitTestReport {
