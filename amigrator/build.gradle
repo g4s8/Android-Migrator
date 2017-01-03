@@ -39,8 +39,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode System.env.TRAVIS_BUILD_NUMBER?.toInteger() ?: 1
+        versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -127,7 +127,7 @@ android {
         configurations = ['archives']
         pkg {
             repo = 'maven-android'
-            name = 'com.g4s8.amigrator'
+            name = 'com.g4s8:amigrator'
             licenses = ['MIT']
             vcsUrl = gitUrl
             websiteUrl = siteUrl
