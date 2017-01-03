@@ -28,6 +28,6 @@ after_success:
 
 deploy:
   provider: 'script'
-  script: './gradlew bintrayUpload && ./travis-tag.shs'
+  script: './gradlew bintrayUpload && ./travis-tag.sh'
   on:
     branch: 'master'
