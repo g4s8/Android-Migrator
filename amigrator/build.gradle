@@ -11,31 +11,6 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
-
-    task sourcesJar(type: Jar) {
-        from android.sourceSets.main.java.srcDirs
-        classifier = 'sources'
-    }
-
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives javadocJar
-        archives sourcesJar
-    }
-
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
@@ -54,59 +29,9 @@ android {
         }
     }
 
-    tasks.whenTaskAdded { task ->
-        if (task.name == 'assembleDebugUnitTest') {
-            task.dependsOn copyDebugTestAssets
-        } else if (task.name == 'assembleReleaseUnitTest') {
-            task.dependsOn copyReleaseTestAssets
-        }
-    }
-
-    task copyDebugTestAssets(type: Copy) {
-        from "${projectDir}/src/test/assets"
-        into "${buildDir}/intermediates/bundles/debug/assets"
-    }
-
-    task copyReleaseTestAssets(type: Copy) {
-        from "${projectDir}/src/test/assets"
-        into "${buildDir}/intermediates/bundles/release/assets"
-    }
-
-    task jacocoReport(type: JacocoReport) {
-        group = 'Reporting'
-        description = 'Generate Jacoco coverage reports after running tests.'
-
-        reports {
-            xml {
-                enabled = true
-                destination "${buildDir}/reports/jacoco/jacoco.xml"
-            }
-            html {
-                enabled = true
-                destination "${buildDir}/reports/jacoco"
-            }
-        }
-
-        classDirectories = fileTree(
-                dir: 'build/intermediates/classes/debug',
-                excludes: [
-                        '**/R*.class',
-                        '**/BuildConfig*',
-                        '**/*Exception.class',
-                        '**/*$$*'
-                ]
-        )
-
-        sourceDirectories = files('src/main/java')
-        executionData = files('build/jacoco/testDebugUnitTest.exec')
-
-        doFirst {
-            files('build/intermediates/classes/debug').getFiles().each { file ->
-                if (file.name.contains('$$')) {
-                    file.renameTo(file.path.replace('$$', '$'))
-                }
-            }
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     testOptions {
@@ -116,57 +41,6 @@ android {
             }
         }
     }
-
-    def siteUrl = 'https://github.com/g4s8/Android-Migrator'
-    def gitUrl = 'https://github.com/g4s8/Android-Migrator.git'
-
-    bintray {
-        user = System.env.BINTRAY_USER
-        key = System.env.BINTRAY_API_KEY
-
-        configurations = ['archives']
-        pkg {
-            repo = 'maven-android'
-            name = 'com.g4s8.amigrator'
-            licenses = ['MIT']
-            vcsUrl = gitUrl
-            websiteUrl = siteUrl
-            issueTrackerUrl = "${siteUrl}/issues"
-            labels = ['aar', 'android']
-            publicDownloadNumbers = true
-        }
-    }
-
-    install {
-        repositories.mavenInstaller {
-            pom {
-                project {
-                    packaging 'aar'
-                    name 'Android SQLite migration library'
-                    url siteUrl
-                    licenses {
-                        license {
-                            name 'The MIT License (MIT)'
-                            url 'https://github.com/g4s8/Android-Migrator/blob/master/LICENSE'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id 'g4s8'
-                            name 'Kirill'
-                            email 'g4s8.public@gmail.com'
-                        }
-                    }
-                    scm {
-                        connection gitUrl
-                        developerConnection gitUrl
-                        url siteUrl
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 dependencies {
@@ -177,3 +51,127 @@ dependencies {
     testCompile 'org.robolectric:robolectric:3.1.4'
 }
 
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+def siteUrl = 'https://github.com/g4s8/Android-Migrator'
+def gitUrl = 'https://github.com/g4s8/Android-Migrator.git'
+
+bintray {
+    user = System.env.BINTRAY_USER
+    key = System.env.BINTRAY_API_KEY
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven-android'
+        name = 'com.g4s8.amigrator'
+        licenses = ['MIT']
+        vcsUrl = gitUrl
+        websiteUrl = siteUrl
+        issueTrackerUrl = "${siteUrl}/issues"
+        labels = ['aar', 'android']
+        publicDownloadNumbers = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'Android SQLite migration library'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'https://github.com/g4s8/Android-Migrator/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'g4s8'
+                        name 'Kirill'
+                        email 'g4s8.public@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'assembleDebugUnitTest') {
+        task.dependsOn copyDebugTestAssets
+    } else if (task.name == 'assembleReleaseUnitTest') {
+        task.dependsOn copyReleaseTestAssets
+    }
+}
+
+task copyDebugTestAssets(type: Copy) {
+    from "${projectDir}/src/test/assets"
+    into "${buildDir}/intermediates/bundles/debug/assets"
+}
+
+task copyReleaseTestAssets(type: Copy) {
+    from "${projectDir}/src/test/assets"
+    into "${buildDir}/intermediates/bundles/release/assets"
+}
+
+task jacocoReport(type: JacocoReport) {
+    group = 'Reporting'
+    description = 'Generate Jacoco coverage reports after running tests.'
+
+    reports {
+        xml {
+            enabled = true
+            destination "${buildDir}/reports/jacoco/jacoco.xml"
+        }
+        html {
+            enabled = true
+            destination "${buildDir}/reports/jacoco"
+        }
+    }
+
+    classDirectories = fileTree(
+            dir: 'build/intermediates/classes/debug',
+            excludes: [
+                    '**/R*.class',
+                    '**/BuildConfig*',
+                    '**/*Exception.class',
+                    '**/*$$*'
+            ]
+    )
+
+    sourceDirectories = files('src/main/java')
+    executionData = files('build/jacoco/testDebugUnitTest.exec')
+
+    doFirst {
+        files('build/intermediates/classes/debug').getFiles().each { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+    }
+}
