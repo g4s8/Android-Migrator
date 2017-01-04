@@ -7,7 +7,7 @@ Android migrator will help you to apply migrations from assets files via default
 [![Bintray](https://img.shields.io/bintray/v/g4s8/maven-android/com.g4s8.amigrator.svg?style=flat-square)](https://bintray.com/g4s8/maven-android/com.g4s8.amigrator/_latestVersion)
 
 ## Setup
-Add grale dependency
+Add gradle dependency
 ```gradle
 dependencies {
     compile 'com.g4s8:amigrator:<version>'
