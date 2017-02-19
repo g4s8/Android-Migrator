@@ -26,9 +26,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-
 import org.junit.Assert;
-
 
 final class DBUnit extends SQLiteOpenHelper {
 
@@ -59,7 +57,6 @@ final class DBUnit extends SQLiteOpenHelper {
         this.migrations = migrations;
         this.version = version;
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {

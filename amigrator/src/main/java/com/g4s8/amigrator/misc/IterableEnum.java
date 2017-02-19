@@ -23,13 +23,13 @@
 package com.g4s8.amigrator.misc;
 
 import android.support.annotation.NonNull;
-
 import java.util.Enumeration;
 import java.util.Iterator;
 
 /**
  * Adapter for {@link Enumeration} with {@link Iterable} source.
  *
+ * @param <T> enumeration and iterable item type.
  * @author g4s8 (g4s8.public@gmail.com)
  */
 public final class IterableEnum<T> implements Enumeration<T> {
@@ -40,6 +40,11 @@ public final class IterableEnum<T> implements Enumeration<T> {
         this.iterator = iterator;
     }
 
+    /**
+     * Ctor.
+     *
+     * @param iterable Source.
+     */
     public IterableEnum(@NonNull final Iterable<? extends T> iterable) {
         this(iterable.iterator());
     }

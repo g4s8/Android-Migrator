@@ -23,7 +23,8 @@
 package com.g4s8.amigrator;
 
 import com.google.common.collect.Lists;
-
+import java.io.IOException;
+import java.util.ArrayList;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -32,13 +33,23 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
+/**
+ * Test migrations order.
+ */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23, manifest = Config.NONE, assetDir = Config.DEFAULT_ASSET_FOLDER)
-public class OrderedByVersionFilesTest {
+@Config(
+    constants = BuildConfig.class,
+    sdk = 23,
+    manifest = Config.NONE,
+    assetDir = Config.DEFAULT_ASSET_FOLDER
+)
+public final class OrderedByVersionFilesTest {
 
+    /**
+     * Verify order.
+     *
+     * @throws IOException if failed
+     */
     @Test
     public void orderedByVersion() throws IOException {
         final ArrayList<MigrationFileAsset> ordered = Lists.newArrayList(

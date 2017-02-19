@@ -22,6 +22,9 @@
  */
 package com.g4s8.amigrator;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -30,15 +33,22 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
+/**
+ * Test for migrations from assets files.
+ */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23, manifest = Config.NONE, assetDir = Config.DEFAULT_ASSET_FOLDER)
+@Config(
+    constants = BuildConfig.class,
+    sdk = 23,
+    manifest = Config.NONE,
+    assetDir = Config.DEFAULT_ASSET_FOLDER
+)
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public class MigrationFileAssetTest {
+public final class MigrationFileAssetTest {
 
+    /**
+     * Read version from file name.
+     */
     @Test
     public void version() {
         MatcherAssert.assertThat(
@@ -49,6 +59,9 @@ public class MigrationFileAssetTest {
         );
     }
 
+    /**
+     * Read version from filename without extension.
+     */
     @Test
     public void versionWithoutExt() {
         MatcherAssert.assertThat(
@@ -59,6 +72,11 @@ public class MigrationFileAssetTest {
         );
     }
 
+    /**
+     * Multiple migrations in one file.
+     *
+     * @throws IOException if failed
+     */
     @Test
     public void migrations() throws IOException {
         final List<Migration> migrations = new MigrationFileAsset(
@@ -70,42 +88,31 @@ public class MigrationFileAssetTest {
         );
     }
 
+    /**
+     * Specific valid migration files.
+     *
+     * @throws Exception if failed
+     */
     @Test
     public void cornerCases() throws Exception {
+        assertSize("11.sql", 2);
+        assertSize("22.sql", 2);
+        assertSize("33.sql", 0);
+        assertSize("44.sql", 0);
+        assertSize("55.sql", 2);
+    }
+
+    private static void assertSize(
+        final String file,
+        final int size
+    ) throws IOException {
         MatcherAssert.assertThat(
-            "11.sql",
+            file,
             new MigrationFileAsset(
-                RuntimeEnvironment.application.getAssets(), new File("files", "11.sql")
+                RuntimeEnvironment.application.getAssets(),
+                new File("files", file)
             ).migrations(),
-            Matchers.hasSize(2)
-        );
-        MatcherAssert.assertThat(
-            "22.sql",
-            new MigrationFileAsset(
-                RuntimeEnvironment.application.getAssets(), new File("files", "22.sql")
-            ).migrations(),
-            Matchers.hasSize(2)
-        );
-        MatcherAssert.assertThat(
-            "33.sql",
-            new MigrationFileAsset(
-                RuntimeEnvironment.application.getAssets(), new File("files", "33.sql")
-            ).migrations(),
-            Matchers.hasSize(0)
-        );
-        MatcherAssert.assertThat(
-            "44.sql",
-            new MigrationFileAsset(
-                RuntimeEnvironment.application.getAssets(), new File("files", "44.sql")
-            ).migrations(),
-            Matchers.hasSize(0)
-        );
-        MatcherAssert.assertThat(
-            "55.sql",
-            new MigrationFileAsset(
-                RuntimeEnvironment.application.getAssets(), new File("files", "55.sql")
-            ).migrations(),
-            Matchers.hasSize(2)
+            Matchers.hasSize(size)
         );
     }
 }
