@@ -26,7 +26,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import java.io.IOException;
+import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,12 +35,17 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.io.IOException;
-import java.util.Arrays;
-
+/**
+ * Test sqlite migrations.
+ */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23, manifest = Config.NONE, assetDir = Config.DEFAULT_ASSET_FOLDER)
-public class SQLiteMigrationsTest {
+@Config(
+    constants = BuildConfig.class,
+    sdk = 23,
+    manifest = Config.NONE,
+    assetDir = Config.DEFAULT_ASSET_FOLDER
+)
+public final class SQLiteMigrationsTest {
 
     private static void assertVersions(final Cursor cursor, final int... expected) {
         Assert.assertTrue(cursor.moveToFirst());
@@ -53,6 +59,11 @@ public class SQLiteMigrationsTest {
         Assert.assertFalse(cursor.moveToNext());
     }
 
+    /**
+     * Apply all migrations to new database.
+     *
+     * @throws IOException if failed
+     */
     @Test
     public void fullCreate() throws IOException {
         final DBUnit unit = new DBUnit(RuntimeEnvironment.application, 3);
@@ -70,17 +81,20 @@ public class SQLiteMigrationsTest {
         }
     }
 
+    /**
+     * Upgrade existing database.
+     */
     @Test
     public void sequentialUpgrade() {
         final Context ctx = RuntimeEnvironment.application.getApplicationContext();
-        final int[] VERSIONS = new int[]{1, 2, 3};
+        final int[] versions = new int[]{1, 2, 3};
         for (int i = 1; i <= 3; i++) {
             final SQLiteOpenHelper unit = new DBUnit(ctx, i);
             final SQLiteDatabase db = unit.getReadableDatabase();
             Cursor cursor = null;
             try {
                 cursor = db.rawQuery("SELECT value FROM versions", new String[0]);
-                assertVersions(cursor, Arrays.copyOf(VERSIONS, i));
+                assertVersions(cursor, Arrays.copyOf(versions, i));
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -91,6 +105,9 @@ public class SQLiteMigrationsTest {
         }
     }
 
+    /**
+     * Apply migrations from custom folder.
+     */
     @Test
     public void customFolder() {
         final Context ctx = RuntimeEnvironment.application;

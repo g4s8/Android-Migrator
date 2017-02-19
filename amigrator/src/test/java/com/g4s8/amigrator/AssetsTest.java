@@ -22,6 +22,9 @@
  */
 package com.g4s8.amigrator;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -32,20 +35,27 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * Ensure that assets folder has been copied.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23, manifest = Config.NONE, assetDir = Config.DEFAULT_ASSET_FOLDER)
+@Config(
+    constants = BuildConfig.class,
+    sdk = 23,
+    manifest = Config.NONE,
+    assetDir = Config.DEFAULT_ASSET_FOLDER
+)
 public final class AssetsTest {
 
+    /**
+     * Verify assets can be read with robolectric.
+     *
+     * @throws IOException if failed.
+     */
     @Test
     public void check() throws IOException {
-        final InputStream s = RuntimeEnvironment.application.getAssets().open(new File("check.txt").getPath());
+        final InputStream s = RuntimeEnvironment.application.getAssets()
+            .open(new File("check.txt").getPath());
         Assert.assertNotNull(s);
         try {
             MatcherAssert.assertThat(

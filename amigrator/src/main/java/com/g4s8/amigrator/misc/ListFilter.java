@@ -23,17 +23,26 @@
 package com.g4s8.amigrator.misc;
 
 import android.support.annotation.NonNull;
-
 import com.android.internal.util.Predicate;
-
 import java.util.AbstractList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Filter list with predicate.
+ *
+ * @param <T> list item type.
+ */
 public final class ListFilter<T> extends AbstractList<T> {
 
     private final List<T> origin;
 
+    /**
+     * Ctor.
+     *
+     * @param source    source list.
+     * @param predicate predicate to apply.
+     */
     public ListFilter(@NonNull final List<T> source, @NonNull final Predicate<T> predicate) {
         origin = filter(source, predicate);
     }

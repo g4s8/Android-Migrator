@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: '../q/q.gradle'
+apply plugin: 'com.g4s8.quanta'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'

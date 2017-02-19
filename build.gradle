@@ -12,6 +12,7 @@ buildscript {
         classpath group: 'org.jacoco', name: 'org.jacoco.core', version: '0.7.8'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.g4s8:quanta:0.1.1'
     }
 }
 
