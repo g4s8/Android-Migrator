@@ -5,7 +5,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 group = 'com.g4s8'
-version = new File("${rootDir}/version.txt").text.trim() + "." + System.env.TRAVIS_BUILD_NUMBER ?: "-local"
+def versionMajor = System.env.TRAVIS_TAG ?: "0.1"
+def versionMinor = System.env.TRAVIS_BUILD_NUMBER ?: "-local"
+version = "${versionMajor}.${versionMinor}"
 
 android {
     compileSdkVersion 25
