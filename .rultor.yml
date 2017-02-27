@@ -1,0 +1,3 @@
+merge:
+  script: |
+    ./gradlew clean build
