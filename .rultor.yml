@@ -1,5 +1,5 @@
 docker:
-  image: yegor256/java8
+  image: g4s8/rlt2droid
 
 merge:
   script: |
