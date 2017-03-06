@@ -13,7 +13,7 @@ dependencies {
     compile 'com.g4s8:amigrator:<version>'
 }
 ```
-see last version here: https://bintray.com/g4s8/maven-android/com.g4s8.amigrator/_latestVersion
+[see latest release](https://github.com/g4s8/Android-Migrator/releases/latest)
 
 Add migration files to assets folder "migrations" (folder name can be customized). 
 Each migration file should be named with format: `<version>.sql`, where visersion is integer number.
