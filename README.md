@@ -47,7 +47,7 @@ public final class Sqlite extends SQLiteOpenHelper {
     private final SQLiteMigrations migrations;
     private final int version;
     
-    public DBAdapter(final Context ctx, final int version) {
+    public Sqlite(final Context ctx, final int version) {
         super(context, DBAdapter.class.getName(), null, version);
         migrations = new SQLiteMigrations(ctx); // or provide custom assets folder as second parameter
         this.version = version;
