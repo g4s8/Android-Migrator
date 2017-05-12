@@ -1,4 +1,9 @@
 apply plugin: 'com.android.library'
+/**
+ * @todo #1 Fix custom javadoc tags issue.
+ *  Now it's not possible to use 'todo' pdd tags in javadoc
+ *  because of error: "checkstyle: unknown tag 'todo'"
+ */
 apply plugin: 'com.g4s8.quanta'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.dcendents.android-maven'
@@ -45,6 +50,10 @@ android {
     }
 }
 
+/**
+ * @todo #1 Upgrade support library.
+ *  Upgrade dependency to 25.3.1 version.
+ */
 dependencies {
     compile 'com.android.support:support-annotations:25.2.0'
     compile 'commons-io:commons-io:2.4'
@@ -58,9 +67,15 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+/**
+ * @todo #1 JavaDoc support-annotations dependency is missing.
+ *  Add support-annotations javadoc dependency
+ *  to fix warnings like 'Class Keep/NonNull' not found.
+ */
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.tags = ["todo"]
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

@@ -24,14 +24,11 @@ package com.g4s8.amigrator;
 
 import android.content.res.AssetManager;
 import android.support.annotation.NonNull;
-
-import org.apache.commons.io.IOUtils;
-
+import com.g4s8.amigrator.misc.MappedIterable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 /**
  * {@link MigrationFile} from android assets.
@@ -52,26 +49,26 @@ final class MigrationFileAsset implements MigrationFile {
         return version;
     }
 
-    public List<Migration> migrations() throws IOException {
+    public Iterable<Migration> migrations() throws IOException {
         final InputStream stream = assets.open(file.getPath());
         //noinspection TryFinallyCanBeTryWithResources
         try {
-            return migrations(IOUtils.toString(stream));
+            return new MappedIterable<>(
+                new SplitStatements(
+                    IOUtils.toString(stream)
+                ),
+                new MappedIterable.Map<String, Migration>() {
+                    @NonNull
+                    @Override
+                    public Migration apply(@NonNull final String statement) {
+                        return new Migration(statement);
+                    }
+                }
+            );
         } finally {
             //noinspection ThrowFromFinallyBlock
             stream.close();
         }
-    }
-
-    private static List<Migration> migrations(@NonNull final String content) {
-        final LinkedList<Migration> migrations = new LinkedList<>();
-        for (String stm : content.split(";")) {
-            final String line = stm.trim();
-            if (line.length() > 0) {
-                migrations.addLast(new Migration(line));
-            }
-        }
-        return migrations;
     }
 
     private static int version(String name) {
