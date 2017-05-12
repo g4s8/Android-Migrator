@@ -26,7 +26,6 @@ final class SplitStatements extends IterableWrap<String> {
         for (final Pattern ptn : SplitStatements.PTN_IGNORE) {
             tmp = ptn.matcher(tmp).replaceAll("");
         }
-        System.out.println(tmp);
         final List<String> split = new LinkedList<>();
         for (final String statement : tmp.trim().split(";")) {
             final String trimmed = statement.trim();

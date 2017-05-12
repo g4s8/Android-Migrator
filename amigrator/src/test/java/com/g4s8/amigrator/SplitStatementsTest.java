@@ -19,6 +19,9 @@ import org.robolectric.annotation.Config;
 )
 public final class SplitStatementsTest {
 
+    /**
+     * Test with single-line comment.
+     */
     @Test
     public void removeSingleLineCommentTest() {
         final String statement = "STATEMENT1";
@@ -28,15 +31,25 @@ public final class SplitStatementsTest {
         );
     }
 
+    /**
+     * Test with many single-line comments.
+     */
     @Test
     public void removeManySingleLineCommentsTest() {
         final String statement = "STATEMENT2";
         MatcherAssert.assertThat(
-            new SplitStatements("-- single line comment\n" + statement + "\n--one more comment\n-- and last comment").iterator().next(),
+            new SplitStatements(
+                "-- single line comment\n"
+                    + statement
+                    + "\n--one more comment\n-- and last comment"
+            ).iterator().next(),
             Matchers.equalTo(statement)
         );
     }
 
+    /**
+     * Test with multi-line comment.
+     */
     @Test
     public void removeMultiLineCommentTest() {
         final String statement = "STATEMENT3";
@@ -46,11 +59,18 @@ public final class SplitStatementsTest {
         );
     }
 
+    /**
+     * Test with many multi-line comments.
+     */
     @Test
     public void removeManyMultiLineCommentTest() {
         final String statement = "STATEMENT4";
         MatcherAssert.assertThat(
-            new SplitStatements("/* multi \n line \n comment \r\n */" + statement + ";\n/* another \n comment */").iterator().next(),
+            new SplitStatements(
+                "/* multi \n line \n comment \r\n */"
+                    + statement
+                    + ";\n/* another \n comment */"
+            ).iterator().next(),
             Matchers.equalTo(statement)
         );
     }
