@@ -1,6 +1,9 @@
 docker:
   image: g4s8/rlt2droid
 
+env:
+  ANDROID_HOME: "/opt/android"
+
 merge:
   script: |
     ./gradlew clean build
