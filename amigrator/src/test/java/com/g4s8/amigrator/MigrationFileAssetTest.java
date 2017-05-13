@@ -22,9 +22,10 @@
  */
 package com.g4s8.amigrator;
 
+import com.g4s8.amigrator.misc.IterableEnum;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -79,11 +80,14 @@ public final class MigrationFileAssetTest {
      */
     @Test
     public void migrations() throws IOException {
-        final List<Migration> migrations = new MigrationFileAsset(
-            RuntimeEnvironment.application.getAssets(), new File("files", "88.sql")
-        ).migrations();
         MatcherAssert.assertThat(
-            migrations,
+            Collections.list(
+                new IterableEnum<>(
+                    new MigrationFileAsset(
+                        RuntimeEnvironment.application.getAssets(), new File("files", "88.sql")
+                    ).migrations()
+                )
+            ),
             Matchers.hasSize(2)
         );
     }
@@ -108,10 +112,14 @@ public final class MigrationFileAssetTest {
     ) throws IOException {
         MatcherAssert.assertThat(
             file,
-            new MigrationFileAsset(
-                RuntimeEnvironment.application.getAssets(),
-                new File("files", file)
-            ).migrations(),
+            Collections.list(
+                new IterableEnum<>(
+                    new MigrationFileAsset(
+                        RuntimeEnvironment.application.getAssets(),
+                        new File("files", file)
+                    ).migrations()
+                )
+            ),
             Matchers.hasSize(size)
         );
     }

@@ -23,7 +23,6 @@
 package com.g4s8.amigrator;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Sql file with migrations.
@@ -32,5 +31,5 @@ interface MigrationFile {
 
     int version();
 
-    List<Migration> migrations() throws IOException;
+    Iterable<Migration> migrations() throws IOException;
 }
