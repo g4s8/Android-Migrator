@@ -50,13 +50,16 @@ android {
     }
 }
 
-/**
- * @todo #1 Upgrade support library.
- *  Upgrade dependency to 25.3.1 version.
- */
+configurations {
+    javadocDeps
+}
+
 dependencies {
-    compile 'com.android.support:support-annotations:25.2.0'
+    def supportVersion = '25.3.1'
+    compile "com.android.support:support-annotations:$supportVersion"
     compile 'commons-io:commons-io:2.4'
+
+    javadocDeps "com.android.support:support-annotations:$supportVersion"
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.1.4'
@@ -67,14 +70,10 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-/**
- * @todo #1 JavaDoc support-annotations dependency is missing.
- *  Add support-annotations javadoc dependency
- *  to fix warnings like 'Class Keep/NonNull' not found.
- */
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.javadocDeps
     options.tags = ["todo"]
 }
 
